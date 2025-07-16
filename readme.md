@@ -45,6 +45,7 @@ Backend logic lives in `app/api/chat/route.ts`. From here, you can change the pr
 ![A streaming conversation between the user and an AI agent](/public/images/structured-output-conversation.png)
 用户与 AI 代理之间的流式对话
 
+
 本例中的链使用一个名为 Zod 的流行库来构建一个模式，然后按照 OpenAI 期望的方式对其进行格式化。之后，它将该模式作为函数传递给 OpenAI，并传递一个function_call参数以强制 OpenAI 以指定的格式返回参数。
 
 有关更多详细信息，请查看此文档页面。
