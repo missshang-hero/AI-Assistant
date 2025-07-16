@@ -1,133 +1,94 @@
-# 🦜️🔗 LangChain + Next.js Starter Template
+此模板搭建了一个 LangChain.js + Next.js 入门应用的脚手架。它展示了如何在多个用例中使用和组合 LangChain 模块。具体来说：
 
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/langchain-ai/langchain-nextjs-template)
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Flangchain-ai%2Flangchain-nextjs-template)
+简单聊天
+从 LLM 调用返回结构化输出
+与代理一起回答复杂、多步骤的问题
+具有链和向量存储的检索增强生成 (RAG)
+带有代理和向量存储的检索增强生成 (RAG)
+他们中的大多数使用 Vercel 的AI SDK将令牌流式传输到客户端并显示传入的消息。
 
-This template scaffolds a LangChain.js + Next.js starter app. It showcases how to use and combine LangChain modules for several
-use cases. Specifically:
+代理使用LangGraph.js，这是 LangChain 用于构建代理工作流的框架。它们使用预配置的辅助函数来最大限度地减少样板代码，但您可以根据需要将其替换为自定义图表。
 
-- [Simple chat](/app/api/chat/route.ts)
-- [Returning structured output from an LLM call](/app/api/chat/structured_output/route.ts)
-- [Answering complex, multi-step questions with agents](/app/api/chat/agents/route.ts)
-- [Retrieval augmented generation (RAG) with a chain and a vector store](/app/api/chat/retrieval/route.ts)
-- [Retrieval augmented generation (RAG) with an agent and a vector store](/app/api/chat/retrieval_agents/route.ts)
+演示 GIF
 
-Most of them use Vercel's [AI SDK](https://github.com/vercel-labs/ai) to stream tokens to the client and display the incoming messages.
+它也是免费套餐！查看下面的捆绑包大小统计信息。
 
-The agents use [LangGraph.js](https://langchain-ai.github.io/langgraphjs/), LangChain's framework for building agentic workflows. They use preconfigured helper functions to minimize boilerplate, but you can replace them with custom graphs as desired.
+您可以在此处查看此 repo 的托管版本：https://langchain-nextjs-template.vercel.app/
 
-![Demo GIF](/public/images/agent-convo.gif)
+🚀 入门
+首先，克隆此 repo 并将其下载到本地。
 
-It's free-tier friendly too! Check out the [bundle size stats below](#-bundle-size).
+接下来，你需要在你的 repo 文件中设置环境变量.env.local。将.env.example文件复制到.env.local。要开始使用基本示例，你只需添加你的 OpenAI API 密钥。
 
-You can check out a hosted version of this repo here: https://langchain-nextjs-template.vercel.app/
+由于此应用程序是在无服务器 Edge 函数中运行的，因此如果您使用LangSmith 跟踪LANGCHAIN_CALLBACKS_BACKGROUND，请确保已将环境变量设置为确保跟踪完成。false
 
-## 🚀 Getting Started
+yarn接下来，使用您喜欢的包管理器（例如）安装所需的包。
 
-First, clone this repo and download it locally.
+现在您已准备好运行开发服务器：
 
-Next, you'll need to set up environment variables in your repo's `.env.local` file. Copy the `.env.example` file to `.env.local`.
-To start with the basic examples, you'll just need to add your OpenAI API key.
-
-Because this app is made to run in serverless Edge functions, make sure you've set the `LANGCHAIN_CALLBACKS_BACKGROUND` environment variable to `false` to ensure tracing finishes if you are using [LangSmith tracing](https://docs.smith.langchain.com/).
-
-Next, install the required packages using your preferred package manager (e.g. `yarn`).
-
-Now you're ready to run the development server:
-
-```bash
 yarn dev
-```
+使用浏览器打开http://localhost:3000查看结果！向机器人询问一些问题，你会看到流式响应：
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result! Ask the bot something and you'll see a streamed response:
+用户与人工智能之间的流媒体对话
 
-![A streaming conversation between the user and the AI](/public/images/chat-conversation.png)
+您可以通过修改 来开始编辑页面app/page.tsx。当您编辑文件时，页面会自动更新。
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+后端逻辑位于app/api/chat/route.ts。在这里，您可以更改提示和模型，或添加其他模块和逻辑。
 
-Backend logic lives in `app/api/chat/route.ts`. From here, you can change the prompt and model, or add other modules and logic.
+🧱 结构化输出
+第二个示例展示了如何使用 OpenAI Functions 让模型根据特定模式返回输出。点击Structured Output导航栏中的链接即可尝试：
 
-## 🧱 Structured Output
+用户与 AI 代理之间的流式对话
 
-The second example shows how to have a model return output according to a specific schema using OpenAI Functions.
-Click the `Structured Output` link in the navbar to try it out:
+本例中的链使用一个名为 Zod 的流行库来构建一个模式，然后按照 OpenAI 期望的方式对其进行格式化。之后，它将该模式作为函数传递给 OpenAI，并传递一个function_call参数以强制 OpenAI 以指定的格式返回参数。
 
-![A streaming conversation between the user and an AI agent](/public/images/structured-output-conversation.png)
+有关更多详细信息，请查看此文档页面。
 
-The chain in this example uses a [popular library called Zod](https://zod.dev) to construct a schema, then formats it in the way OpenAI expects.
-It then passes that schema as a function into OpenAI and passes a `function_call` parameter to force OpenAI to return arguments in the specified format.
+🦜 代理
+要尝试代理示例，您需要通过填充 来授予代理访问互联网的权限SERPAPI_API_KEY。如果您还没有 API 密钥，.env.local请前往SERP API 网站并获取一个。
 
-For more details, [check out this documentation page](https://js.langchain.com/docs/how_to/structured_output).
+然后，您可以单击Agent示例并尝试询问更复杂的问题：
 
-## 🦜 Agents
+用户与 AI 代理之间的流式对话
 
-To try out the agent example, you'll need to give the agent access to the internet by populating the `SERPAPI_API_KEY` in `.env.local`.
-Head over to [the SERP API website](https://serpapi.com/) and get an API key if you don't already have one.
+此示例使用预先构建的 LangGraph 代理，但您也可以自定义自己的代理。
 
-You can then click the `Agent` example and try asking it more complex questions:
+🐶 检索
+检索示例均使用 Supabase 作为向量存储。但是，如果您愿意，可以 通过更改、和下的代码来切换到其他受支持的向量存储。app/api/retrieval/ingest/route.tsapp/api/chat/retrieval/route.tsapp/api/chat/retrieval_agents/route.ts
 
-![A streaming conversation between the user and an AI agent](/public/images/agent-conversation.png)
+对于 Supabase，请按照这些说明设置您的数据库，然后获取您的数据库 URL 和私钥并将其粘贴到.env.local。
 
-This example uses a [prebuilt LangGraph agent](https://langchain-ai.github.io/langgraphjs/tutorials/quickstart/), but you can customize your own as well.
+然后，您可以切换到Retrieval和Retrieval Agent示例。默认文档文本取自 LangChain.js 检索用例文档，但您可以将其更改为任何您想要的文本。
 
-## 🐶 Retrieval
+对于给定的文本，您只需按Upload一次。再次按此按钮将重新提取文档，从而导致重复。您可以通过导航到控制台并运行 来清除 Supabase 向量存储DELETE FROM documents;。
 
-The retrieval examples both use Supabase as a vector store. However, you can swap in
-[another supported vector store](https://js.langchain.com/docs/integrations/vectorstores) if preferred by changing
-the code under `app/api/retrieval/ingest/route.ts`, `app/api/chat/retrieval/route.ts`, and `app/api/chat/retrieval_agents/route.ts`.
+拆分、嵌入和上传一些文本后，您就可以提出问题了！
 
-For Supabase, follow [these instructions](https://js.langchain.com/docs/integrations/vectorstores/supabase) to set up your
-database, then get your database URL and private key and paste them into `.env.local`.
+用户与 AI 检索链之间的流式对话
 
-You can then switch to the `Retrieval` and `Retrieval Agent` examples. The default document text is pulled from the LangChain.js retrieval
-use case docs, but you can change them to whatever text you'd like.
+用户与 AI 检索代理之间的流式对话
 
-For a given text, you'll only need to press `Upload` once. Pressing it again will re-ingest the docs, resulting in duplicates.
-You can clear your Supabase vector store by navigating to the console and running `DELETE FROM documents;`.
+有关检索链的更多信息，请参阅此页面。此处使用的对话检索链的具体变体是使用 LangChain 表达式语言编写的，您可以 在此处了解更多信息。除了流式响应之外，此链示例还将通过标头返回引用来源。
 
-After splitting, embedding, and uploading some text, you're ready to ask questions!
+有关检索代理的更多信息，请参阅此页面。
 
-![A streaming conversation between the user and an AI retrieval chain](/public/images/retrieval-chain-conversation.png)
+📦 捆绑包大小
+LangChain 本身的 bundle 大小非常小。经过压缩和块拆分后，对于 RAG 用例，LangChain 占用了 37.32 KB 的代码空间（截至@langchain/core 0.1.15 版本），不到 Vercel 免费层边缘函数总分配量 1 MB 的 4%：
 
-![A streaming conversation between the user and an AI retrieval agent](/public/images/retrieval-agent-conversation.png)
 
-For more info on retrieval chains, [see this page](https://js.langchain.com/docs/tutorials/rag).
-The specific variant of the conversational retrieval chain used here is composed using LangChain Expression Language, which you can
-[read more about here](https://js.langchain.com/docs/how_to/qa_sources/). This chain example will also return cited sources
-via header in addition to the streaming response.
 
-For more info on retrieval agents, [see this page](https://langchain-ai.github.io/langgraphjs/tutorials/rag/langgraph_agentic_rag/).
+此软件包默认设置了@next/bundle-analyzer - 您可以通过运行以下命令以交互方式探索软件包大小：
 
-## 📦 Bundle size
-
-The bundle size for LangChain itself is quite small. After compression and chunk splitting, for the RAG use case LangChain uses 37.32 KB of code space (as of [@langchain/core 0.1.15](https://npmjs.com/package/@langchain/core)), which is less than 4% of the total Vercel free tier edge function alottment of 1 MB:
-
-![](/public/images/bundle-size.png)
-
-This package has [@next/bundle-analyzer](https://www.npmjs.com/package/@next/bundle-analyzer) set up by default - you can explore the bundle size interactively by running:
-
-```bash
 $ ANALYZE=true yarn build
-```
+📚 了解更多
+app/api/chat/route.ts和文件中的示例链app/api/chat/retrieval/route.ts使用 LangChain 表达式语言将不同的 LangChain.js 模块组合在一起。您也可以集成其他检索器、代理、预配置链等，但请记住， HttpResponseOutputParser它只能直接用于模型输出。
 
-## 📚 Learn More
+要了解有关使用 LangChain.js 的更多信息，请查看此处的文档：
 
-The example chains in the `app/api/chat/route.ts` and `app/api/chat/retrieval/route.ts` files use
-[LangChain Expression Language](https://js.langchain.com/docs/concepts#langchain-expression-language) to
-compose different LangChain.js modules together. You can integrate other retrievers, agents, preconfigured chains, and more too, though keep in mind
-`HttpResponseOutputParser` is meant to be used directly with model output.
+https://js.langchain.com/docs/
+▲ 在 Vercel 上部署
+准备就绪后，您可以在Vercel 平台上部署您的应用程序。
 
-To learn more about what you can do with LangChain.js, check out the docs here:
+查看Next.js 部署文档以了解更多详细信息。
 
-- https://js.langchain.com/docs/
-
-## ▲ Deploy on Vercel
-
-When ready, you can deploy your app on the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme).
-
-Check out the [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-
-## Thank You!
-
-Thanks for reading! If you have any questions or comments, reach out to us on Twitter
-[@LangChainAI](https://twitter.com/langchainai), or [click here to join our Discord server](https://discord.gg/langchain).
+谢谢你！
