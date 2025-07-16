@@ -38,6 +38,11 @@ yarn dev
 🧱 结构化输出
 第二个示例展示了如何使用 OpenAI Functions 让模型根据特定模式返回输出。点击Structured Output导航栏中的链接即可尝试：
 
+![A streaming conversation between the user and the AI](/public/images/chat-conversation.png)
+
+Backend logic lives in `app/api/chat/route.ts`. From here, you can change the prompt and model, or add other modules and logic.
+## 🧱 Structured Output
+![A streaming conversation between the user and an AI agent](/public/images/structured-output-conversation.png)
 用户与 AI 代理之间的流式对话
 
 本例中的链使用一个名为 Zod 的流行库来构建一个模式，然后按照 OpenAI 期望的方式对其进行格式化。之后，它将该模式作为函数传递给 OpenAI，并传递一个function_call参数以强制 OpenAI 以指定的格式返回参数。
