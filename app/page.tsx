@@ -10,6 +10,7 @@ import {
 } from '@ant-design/x';
 import { ChatWindow } from "@/components/ChatWindow";
 import styles from '../app/css/page.module.css'
+import ChartXiaoPin from '@/components/chartxiaopin';
 
 export default function Home() {
   const defaultConversationsItems = [
@@ -24,7 +25,7 @@ export default function Home() {
   ];
   const logoNode = (
     <div className={styles.logo}>
-      <span>xiaopin X</span>
+      <span>对话框 X</span>
     </div>
   );
 
@@ -81,6 +82,7 @@ export default function Home() {
         placeholder="Hello? this is default hero!"
         activeKey={activeKey}
       ></ChatWindow>
+      <ChartXiaoPin />
     </div>
   );
 }
